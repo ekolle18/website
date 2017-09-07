@@ -20,3 +20,23 @@ WHERE teamID='NYA' and yearID=1927"
 sqldf(query)
 ```
 
+Here are all of the instances where a Yankee has hit 40 or more home runs.
+```{r}
+query<-"SELECT playerID, teamID, yearID, HR FROM Batting
+WHERE teamID='NYA' and HR>=40"
+sqldf(query)
+```
+
+Here are all of the instances where a player hit more than 40 home runs but had less than 60 strikeouts.
+```{r}
+query<-"SELECT playerID, teamID, yearID, HR, SO FROM Batting
+WHERE HR>40 and SO<60"
+sqldf(query)
+```
+
+Here are all of the times that a Phillie in the 1970s hit more than 30 home runs.
+```{r}
+query<-"SELECT playerID, teamID, yearID, HR FROM Batting
+WHERE teamID='PHI' and yearID>=1970 and yearID<=1979 and HR>30"
+sqldf(query)
+```
