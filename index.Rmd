@@ -51,3 +51,43 @@ ORDER BY HR DESC"
 
 sqldf(query)
 ```
+
+Here is an example of all players with less than 10 strikeouts with at least 400 at-bats.
+```{r}
+query<-"SELECT playerID, teamID, yearID, SO, AB FROM Batting
+WHERE SO<10 and AB>=400
+ORDER BY SO"
+sqldf(query)
+```
+
+###GROUP BY
+
+With SQL, you can group columns and find either the sum, average, max, or min. For example, here is how we would find Babe Ruth's career home run totals.
+```{r}
+query<-"SELECT playerID, sum(HR) FROM Batting
+WHERE playerID='ruthba01'
+GROUP BY playerID"
+ 
+sqldf(query)
+```
+
+Here is an example of how you would find the career home run totals of any player greater than 600 and ordered in descending order.
+```{r}
+query<-"SELECT playerID, sum(HR) FROM Batting
+GROUP BY playerID
+HAVING sum(HR)>600
+ORDER BY sum(HR) DESC"
+
+sqldf(query)
+```
+
+Here is an example of how you would find the average home run totals for a season with players that average over 30.
+```{r}
+sqldf(query)
+query<-"SELECT playerID, avg(HR) FROM Batting
+GROUP BY playerID
+HAVING avg(HR)>30
+ORDER BY avg(HR) DESC"
+sqldf(query)
+```
+
