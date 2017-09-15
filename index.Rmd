@@ -81,13 +81,42 @@ ORDER BY sum(HR) DESC"
 sqldf(query)
 ```
 
-Here is an example of how you would find the average home run totals for a season with players that average over 30.
+Here is an example of how you would find the average home run totals for a season with players that average more than 30 home runs.
 ```{r}
-sqldf(query)
-query<-"SELECT playerID, avg(HR) FROM Batting
+query<-"SELECT  playerID, avg(HR) FROM Batting
 GROUP BY playerID
 HAVING avg(HR)>30
 ORDER BY avg(HR) DESC"
+
 sqldf(query)
 ```
 
+###INNER JOIN
+
+With SQL, you can join two tables if both tables have a column in common with the INNER JOIN function. Here is an example of joining the master table and the batting table by finding every year Babe Ruth has played and for what team but show his first and last name instead of his playerID.
+```{r}
+query<-"SELECT nameFirst, nameLast, teamID, yearID FROM Batting INNER JOIN Master
+ON Batting.playerID=Master.playerID
+WHERE Batting.playerID='ruthba01'"
+
+sqldf(query)
+```
+
+Here is an example of all players with their first and last names that have hit 50 or more home runs in a season in descending order.
+```{r}
+query<-"SELECT nameFirst, nameLast, teamID, yearID, HR FROM Batting INNER JOIN Master
+ON Batting.playerID=Master.playerID
+WHERE HR>50
+ORDER BY HR DESC"
+
+sqldf(query)
+```
+
+Here is how you would find Babe Ruth's home run totals for each season he played and for what team he played for by joining the Batting table with the Teams table and by using the team name instead of the teamID.
+```{r}
+query<-"SELECT playerID, name, Batting.yearID, Batting.HR FROM Batting INNER JOIN Teams
+ON Batting.teamID=Teams.teamID and Batting.yearID=Teams.yearID
+WHERE playerID='ruthba01'"
+
+sqldf(query)
+```
