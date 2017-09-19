@@ -120,3 +120,34 @@ WHERE playerID='ruthba01'"
 
 sqldf(query)
 ```
+
+Here is an example of joining two tables. This is how you would find Babe Ruth's home run totals for each season but have it show his name and the team name.
+```{r}
+query<-"SELECT nameFirst, nameLast, name, Batting.yearID, Batting.HR
+FROM (Batting INNER JOIN Master
+ON Batting.playerID=Master.playerID) INNER JOIN Teams
+ON Batting.teamID=Teams.teamID AND Batting.yearID=Teams.yearID
+WHERE Batting.playerID='ruthba01'"
+sqldf(query)
+```
+
+This is how you would the career home runs for any player with more than 600 and have the table show their first and last name.
+```{r}
+query<-"SELECT nameFirst, nameLast, sum(HR) FROM Batting INNER JOIN Master
+ON Batting.playerID=Master.playerID
+GROUP BY Batting.playerID
+HAVING sum(HR)>600
+ORDER BY sum(HR) DESC"
+sqldf(query)
+```
+
+This is how you would find the average salary of more than $1000000 for any player with the first name Bob.
+```{r}
+query<-"SELECT nameFirst, nameLast, avg(salary) FROM Salaries INNER JOIN Master
+ON Salaries.playerID=Master.playerID
+WHERE nameFirst='Bob'
+GROUP BY Salaries.playerID
+HAVING avg(salary)>1000000
+ORDER BY avg(salary) DESC"
+sqldf(query)
+```
